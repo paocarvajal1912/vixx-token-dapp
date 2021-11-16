@@ -35,7 +35,6 @@ ABI_PATH = r"C:\Users\JasonGarcia24\FINTECH\workspace\vixx-token-dapp\vixx_trade
 with open(ABI_PATH) as f:
     ABI = json.load(f)
 
-breakpoint()
 contract = WEB3.eth.contract(address=ADDRESS, abi=ABI)
 
 def signup_view(request):

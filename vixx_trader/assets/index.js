@@ -1,8 +1,8 @@
 function component() {
-    const element = document.createElement("div");
-    element.innerHTML = "Hello webpack!!!";
+    const element = document.createElement('div');
+    element.innerHTML = 'Hello webpack';
     return element;
 }
 
-codument.body.appendChild(component());
+document.body.appendChild(component());
 
