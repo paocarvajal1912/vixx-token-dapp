@@ -1,0 +1,23 @@
+{
+  "name": "vixx_trader",
+  "version": "0.1.0",
+  "description": "Portfolio manager for VXX investment strategies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fintech-Collaboration/vixx-token-dapp.git"
+  },
+  "author": "https://github.com/jasonjgarcia24",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fintech-Collaboration/vixx-token-dapp/issues"
+  },
+  "homepage": "https://github.com/Fintech-Collaboration/vixx-token-dapp#readme",
+  "devDependencies": {
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1"
+  }
+}
