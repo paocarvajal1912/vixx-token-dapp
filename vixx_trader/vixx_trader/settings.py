@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import environ
 
 from pathlib import Path
+
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,6 +84,16 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+WALLET = {    
+    'PUBLIC_KEY': env('PUBLIC_KEY'),
+    'PRIVATE_KEY': env('PRIVATE_KEY'),
+}
+
+CONTRACT = {
+    'ALCHEMY_URL_KEY': env('ALCHEMY_URL_KEY'),
+    'SMART_CONTRACT_ADDRESS': env('SMART_CONTRACT_ADDRESS'),
 }
 
 
