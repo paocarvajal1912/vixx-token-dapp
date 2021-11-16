@@ -1,2 +1,2 @@
-# unnamed-project3
+# vixx-token-dapp
 Project description tbd...
