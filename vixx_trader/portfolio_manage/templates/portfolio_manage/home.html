@@ -1,18 +1,115 @@
 {% load static %}
 
 <!DOCTYPE html>
- <html lang="en">
-     <head>
-         <title>Django Portfolio Manager</title>
-         <style>
-             body {
-                 text-align: center;
-             }
-         </style>
-     </head>
-     <body>
-         <h1>Hello there :)</h1>
-         <p>Place holder for data</p>
-         <script src="{% static 'index-bundle.js' %}"></script>
-     </body>
- </html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add React in One Minute</title>
+
+    <style>
+        body {
+            background-size: cover;
+            text-align: center;
+            padding-top: 0;
+        }
+        
+        header {
+            text-align: center;
+        }
+        
+        .metamask-button {
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            background-image: linear-gradient(
+            to right,
+            #0F8177 0%,
+            #0F867a 0%,
+            #0F8c7f 21%,
+            #0F9185 52%,
+            #0F556c 78%,
+            #0F2a5b 100%
+            );
+            background-size: 200% 200%;
+            animation: gradient-animation 4s ease infinite;
+        }
+        
+        .metamask-button:active {  
+            transform: scale(0.98);
+            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 30px;
+        }
+        
+        .twitter-logo {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .footer-text {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* KeyFrames */
+        @-webkit-keyframes gradient-animation {
+            0% {
+            background-position: 0% 50%;
+            }
+            50% {
+            background-position: 100% 50%;
+            }
+            100% {
+            background-position: 0% 50%;
+            }
+        }
+        @-moz-keyframes gradient-animation {
+            0% {
+            background-position: 0% 50%;
+            }
+            50% {
+            background-position: 100% 50%;
+            }
+            100% {
+            background-position: 0% 50%;
+            }
+        }
+        @keyframes gradient-animation {
+            0% {
+            background-position: 0% 50%;
+            }
+            50% {
+            background-position: 100% 50%;
+            }
+            100% {
+            background-position: 0% 50%;
+            }
+        }
+    </style>
+  </head>
+  <body>
+
+    <h2>Add React in One Minute</h2>
+    <p>This page demonstrates using React with no build tooling.</p>
+    <p>React is loaded as a script tag.</p>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="like_button_container"></div>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- Load our React component. -->
+    <script type="text/babel" src="{% static 'index.js' %}"></script>
+
+  </body>
+</html>

@@ -1,0 +1,85 @@
+body {
+    background-size: cover;
+    text-align: center;
+    padding-top: 0;
+  }
+  
+  header {
+    text-align: center;
+  }
+  
+  .metamask-button {
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    background-image: linear-gradient(
+      to right,
+      #0F8177 0%,
+      #0F867a 0%,
+      #0F8c7f 21%,
+      #0F9185 52%,
+      #0F556c 78%,
+      #0F2a5b 100%
+    );
+    background-size: 200% 200%;
+    animation: gradient-animation 4s ease infinite;
+  }
+  
+  .metamask-button:active {  
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+  }
+  
+  .twitter-logo {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .footer-text {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* KeyFrames */
+  @-webkit-keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @-moz-keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes gradient-animation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  

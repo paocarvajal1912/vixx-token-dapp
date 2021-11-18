@@ -19,19 +19,18 @@ from .forms  import (
     UserCreateForm,
 )
 
-# Kovan Account
-# PUBLIC_KEY  = os.getenv("PUBLIC_KEY")
-PUBLIC_KEY  = settings.WALLET["PUBLIC_KEY"]
-PRIVATE_KEY = settings.WALLET["PRIVATE_KEY"]
+# Account Credentials
+PUBLIC_KEY  = settings.WALLET["GANACHE_1_PUBLIC_KEY"]
+PRIVATE_KEY = settings.WALLET["GANACHE_1_PRIVATE_KEY"]
 
 # Alchemy KovanApp URL
 URL  = settings.CONTRACT["ALCHEMY_URL_KEY"]
 WEB3 = Web3(Web3.HTTPProvider(URL))
 
 # Contract's Address and ABI
-ADDRESS = WEB3.toChecksumAddress(settings.CONTRACT["SMART_CONTRACT_ADDRESS"])
+ADDRESS  = WEB3.toChecksumAddress(settings.CONTRACT["SMART_CONTRACT_ADDRESS"])
+ABI_PATH = settings.ABI_DIR(app="portfolio_manage")
 
-ABI_PATH = r"C:\Users\JasonGarcia24\FINTECH\workspace\vixx-token-dapp\vixx_trader\portfolio_manage\contracts\compiled\abi.json"
 with open(ABI_PATH) as f:
     ABI = json.load(f)
 
@@ -83,7 +82,6 @@ def logout_view(request):
     return redirect("login")
 
 
-@login_required(login_url="login")
 def home(request):
     context = {}
 
