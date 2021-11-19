@@ -24,6 +24,8 @@ def garch_fit_and_predict(series, ticker, horizon=1, p=1, q=1, o=1, print_series
            https://arch.readthedocs.io/en/latest/univariate/generated/arch.univariate.base.ARCHModel.html
     print_series_name: indicator for output messages every time a series fit is completed. It is set to False per default.
                      When it's set to True will print the output, when set to False, it will not.
+            For details in the model see:
+            https://arch.readthedocs.io/en/latest/univariate/univariate_volatility_modeling.html
     
     
     Return:
