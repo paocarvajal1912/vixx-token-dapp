@@ -1,115 +1,96 @@
+{% extends './base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
+<DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Add React in One Minute</title>
+      {% block head %}
+      <meta name="nickname" content={{ nickname }} />
+      <meta name="public_address" content={{ public_address }} />
+      <meta name="balance" content={{ balance }} />
+      <meta name="coin_cost" content={{ coin_cost }} />
 
-    <style>
-        body {
-            background-size: cover;
-            text-align: center;
-            padding-top: 0;
-        }
-        
-        header {
-            text-align: center;
-        }
-        
-        .metamask-button {
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            background-image: linear-gradient(
-            to right,
-            #0F8177 0%,
-            #0F867a 0%,
-            #0F8c7f 21%,
-            #0F9185 52%,
-            #0F556c 78%,
-            #0F2a5b 100%
-            );
-            background-size: 200% 200%;
-            animation: gradient-animation 4s ease infinite;
-        }
-        
-        .metamask-button:active {  
-            transform: scale(0.98);
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-        }
-        
-        .footer-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 30px;
-        }
-        
-        .twitter-logo {
-            width: 35px;
-            height: 35px;
-        }
-        
-        .footer-text {
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        /* KeyFrames */
-        @-webkit-keyframes gradient-animation {
-            0% {
-            background-position: 0% 50%;
-            }
-            50% {
-            background-position: 100% 50%;
-            }
-            100% {
-            background-position: 0% 50%;
-            }
-        }
-        @-moz-keyframes gradient-animation {
-            0% {
-            background-position: 0% 50%;
-            }
-            50% {
-            background-position: 100% 50%;
-            }
-            100% {
-            background-position: 0% 50%;
-            }
-        }
-        @keyframes gradient-animation {
-            0% {
-            background-position: 0% 50%;
-            }
-            50% {
-            background-position: 100% 50%;
-            }
-            100% {
-            background-position: 0% 50%;
-            }
-        }
-    </style>
+      <script src="{% static '/js/home.js' %}"></script>
+      <link rel="stylesheet" href="{% static '/css/home.css' %}">
+      <input name="time_executed" id="time_executed" type="hidden" disabled></input>
+      {% endblock %}
   </head>
+
+  <header>
+    {% block header %}
+    <div class="div-row-page-header">
+      <div class="div-col1-page-header">
+        <h1 class="page-title">My Portfolio</h1>
+      </div>
+      
+      <div class="div-col2-page-header">
+        <div class="div-col2-sub1-page-header">          
+          <div id="container-button-metamask" class="container-button-metamask">
+            <script type="text/babel" src="{% static '/js/metamask_connect.js' %}"></script>
+          </div>
+        </div>
+        <div class="div-col2-sub2-page-header">
+          <div className="input-group">
+            <p name="public_address_front" id="input-address-front" class="input-address-front">0x000...</p>
+            <input type="hidden" name="public_address" id="input-address" class="input-address" />
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </header>
+
   <body>
+    {% block content %}
+    <h3>Current Market Value: {{ coin_cost }} USD</h3>
 
-    <h2>Add React in One Minute</h2>
-    <p>This page demonstrates using React with no build tooling.</p>
-    <p>React is loaded as a script tag.</p>
+    <img id="img-robohash" src="" alt="robohash" style="display: none;" />
 
-    <!-- We will put our React component inside this div. -->
-    <div id="like_button_container"></div>
+    <div class="container">      
+      <div class="user-card">
+        <h3>Portfolio Summary</h3>
 
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <div id="container-portfolio-table" class="container-portfolio-table">
+            <script type="text/babel" src="{% static '/js/portfolio_table.js' %}"></script>
+        </div>
+      </div>
 
-    <!-- Load our React component. -->
-    <script type="text/babel" src="{% static 'index.js' %}"></script>
+      <div class="user-card">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <h3>VIXCOIN Sell</h3>
+      
+          <label for="coin_count">Coin count:</label>
+          <input type="number" name="coin_count" step="any" id="coin_count" placeholder="0.00" min="0.01" onchange="updateCurrencyCost()" required />
+      
+          <label for="currency_cost">Coin cost:</label>
+          <input type="number" name="currency_cost" step="any" id="currency_cost" placeholder="0.000000" min="0.000001" onchange="updateCoinCount()" required />
+          <input type="submit" value="Withdraw" />
+        </form>
+      </div>
 
+      <div class="user-card">
+        <form action="" methdod="POST">
+          {% csrf_token %}
+          <h3>VIXCOIN Buy</h3>
+      
+          <label for="coin_count">Coin count:</label>
+          <input type="number" name="coin_count" step="any" id="coin_count" placeholder="0.00" min="0.01" onchange="updateCurrencyCost()" required />
+      
+          <label for="currency_cost">Coin cost:</label>
+          <input type="number" name="currency_cost" step="any" id="currency_cost" placeholder="0.000000" min="0.000001" onchange="updateCoinCount()" required />
+      
+          <label for="purchase_currency">Purchase currency:</label>
+          <select name="purchase_currency" id="purchase_currency">
+            <option value="USD">US Dollar</option>
+            <option value="EUR">Euro</option>
+            <option value="SVC">Salvadorean Colón</option>
+          </select>
+      
+          <input type="submit" value="Depoist" />
+        </form>
+      </div>
+    </div>
+    {% endblock %}
   </body>
 </html>

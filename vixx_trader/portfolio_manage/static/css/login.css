@@ -1,0 +1,99 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #7abecc !important;
+}
+
+h3 {
+    margin: 10px 0 0 0;
+}
+
+.user-card {
+    width: 350px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+}
+
+.form-container,
+.ui-container {
+    margin-top: 10px;
+}
+
+.container-button-metamask {
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.container-button-homepage {
+    padding: 0;
+    margin: 10px 0 15px 0;
+}
+
+.container-button-metamask > div {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.container-input-address {
+    margin-top: 5px;
+    margin-bottom: 6
+}
+
+#form-title{
+    color: #fff;
+}
+
+.button-metamask,
+.button-homepage {
+    width: 100% !important;
+    color: white !important;
+    padding: 5px;
+}
+
+.button-metamask {
+    background: #3333ff !important;
+}
+
+.button-homepage {
+    background: #ff00ff !important;
+}
+
+.button-metamask:focus,
+.button-homepage:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+
+.input-group-text {
+    width: 35px;
+    background: #f7ba5b !important;
+    color: white !important;
+    border: 0 !important;
+    border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+.input-username:focus,
+.input-address:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+
+.messages {
+    color: #fff;
+    background-color: grey;
+    padding: 5px;
+    margin: 10px 0;
+}

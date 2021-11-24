@@ -1,0 +1,98 @@
+{% extends './base.html' %}
+{% load static %}
+{% load humanize %}
+
+<DOCTYPE html>
+  <html lang="en">
+    {% block content %}
+    <head>
+    <title>Transaction List</title>
+
+    <style>
+      .portfolio_card {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 650px;
+        margin: 0px auto;
+        background: powderblue;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+      }
+      .form_container {
+        margin-top: 20px;
+      }
+      #form-title{
+        color: #fff;
+      }
+      .submit_btn {
+        width: 100%;
+        background: #33ccff !important;
+        color: white !important;
+      }
+      .submit_btn:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+      }
+      .submit_container {
+        padding: 0 2rem;
+      }
+      .input-group-text {
+        background: #f7ba5b !important;
+        color: white !important;
+        border: 0 !important;
+        border-radius: 0.25rem 0 0 0.25rem !important;
+      }
+      .input_user,
+      .input_pass:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+      }
+    
+      #messages{
+          background-color: grey;
+          color: #fff;
+          padding: 10px;
+          margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Select Your Portfolio</h1>
+    <a href="{% url 'portfoliocreate' %}"><button class="btn">Add Portfolio</button></a><br><br>
+
+    <div class="container h-50">
+      <div class="d-flex justify-content-center h-100">
+        <div class="portfolio_card">
+          <table id="portfolio">
+            <tr>
+              <th>Nickname</th>
+              <th>Balance</th>
+              <th>Owner</th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            {% for portfolio in portfolios %}
+              {% if request.user.username == portfolio.owner.username %}
+                <tr>
+                    <td style="width: 90px"><a href="{% url 'portfolioupdate' portfolio.id %}">{{ portfolio.nickname }}</a></td>
+                    <td style="width: 90px">${{ portfolio.balance|floatformat:"2"|intcomma }}</td>
+                    <td style="width: 90px">{{ portfolio.owner.username }}</td>
+                    <td style="width: 50px"><a href="{% url 'portfolioupdate' portfolio.id %}"><button>Edit</button></a></td>
+                    <td style="width: 50px"><a href="{% url 'portfoliodelete' portfolio.id %}"><button>Delete</button></a></td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  {% endblock %}
+</html>

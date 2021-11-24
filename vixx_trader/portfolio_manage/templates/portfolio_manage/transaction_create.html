@@ -1,0 +1,23 @@
+<form action="" method="POST">
+    <!-- Add your token below-->
+    {% csrf_token %}
+    <p>Current coin cost {{ coin_cost }}</p>
+
+    <label for="id_time_executed">Time executed:</label>
+    <input type="text" name="time_executed" required id="id_time_executed">
+
+    <label for="id_coin_count">Coin count:</label>
+    <input type="number" name="coin_count" step="any" required id="id_coin_count">
+
+    <label for="id_coin_cost">Coin cost:</label>
+    <input type="number" name="coin_cost" step="any" required id="id_coin_cost">
+
+    <label for="id_purchase_currency">Purchase currency:</label>
+    <select name="purchase_currency" id="id_purchase_currency">
+        <option value="USD">US Dollar</option>
+        <option value="EUR">Euro</option>
+        <option value="SVC">Salvadorean Colón</option>
+    </select>
+
+    <input value="Submit" type="submit"/>
+  </form>

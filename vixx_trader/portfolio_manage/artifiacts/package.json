@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@chainlink/abi": "^0.1.4"
+  }
+}
