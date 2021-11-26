@@ -1,52 +1,9 @@
-
 pragma solidity ^0.5.0;
-
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/token/ERC20/ERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/token/ERC20/ERC20Detailed.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/token/ERC20/ERC20Mintable.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/Crowdsale.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/crowdsale/emission/MintedCrowdsale.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/math/SafeMath.sol";
 
 //FIX CHAINLINK INTEGRATION
 import "@chainlink/contracts/src/v0.5/KeeperCompatibleInterface.sol";
 
-//token creation 
-contract vix_token {
-    using SafeMath for uint;
-
-    address payable owner = msg.sender;
-    string public symbol = "VIX";
-    //edit the line below for exchange rate 
-    uint public exchange_rate = ;
-
-    mapping(address => uint) balances;
-
-    function balance() public view returns(uint) {
-        return balances[msg.sender];
-    }
-
-    function transfer(address recipient, uint value) public {
-        balances[msg.sender] = balances[msg.sender].sub(value);
-        balances[recipient] = balances[recipient].add(value);
-    }
-
-    function purchase() public payable {
-        uint amount = msg.value.mul(exchange_rate);
-        balances[msg.sender] = balances[msg.sender].add(amount);
-        owner.transfer(msg.value);
-    }
-
-    function mint(address recipient, uint value) public {
-        require(msg.sender == owner, "You do not have permission to mint tokens!");
-        balances[recipient] = balances[recipient].add(value);
-    }
-}
-
-//token distribution 
-
-
-//start of chainlink code
+/start of chainlink code
 //needs parameters specific to VIXM stock ticker 
 // MyContract inherits the ChainlinkClient contract to gain the
 // functionality of creating Chainlink requests
