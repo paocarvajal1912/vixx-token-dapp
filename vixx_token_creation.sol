@@ -9,22 +9,16 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 //token creation 
 //edit the line below for exchange rate 
-    //update everyday daily rate before market close the exchange rate
-    //cost of token 
-    //function to updated - owner 
-    //automated
-    //keep track of owner account
-    //only owner should update
-    //track and log of exchange rates
-    //variable is not public
-    //function is public
-    //creation function 
 
 contract vix_token {
     using SafeMath for uint;
 
     address payable owner = msg.sender;
     string public symbol = "VIX";
+
+    //exchange rate should not be public and should update daily
+    //exchange rate is cost of token
+    //only owner can update?
 
     uint public exchange_rate = ;
     mapping(address => uint) balances;
@@ -33,6 +27,7 @@ contract vix_token {
         return balances[msg.sender];
     }
 
+    //transfer tokens between users 
     function transfer(address recipient, uint value) public {
         balances[msg.sender] = balances[msg.sender].sub(value);
         balances[recipient] = balances[recipient].add(value);
@@ -44,8 +39,11 @@ contract vix_token {
         owner.transfer(msg.value);
     }
 
+    //log of exchange rates
+    function log()
+
     function mint(address recipient, uint value) public {
-        require(msg.sender == owner, "You do not have permission to mint tokens!");
+        require(msg.sender == owner, "You can not mint tokens!");
         balances[recipient] = balances[recipient].add(value);
     }
 }
