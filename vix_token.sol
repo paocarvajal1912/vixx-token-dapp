@@ -13,13 +13,19 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 
 //srini please break up code into separate files
+//to get info about AI/ML model, switch to Paola's dev branch and select the ipynb file for the model vixm_adaboost_model
 //still need to check code for accuracy 
 //need to make token price based on performance 
 //check if users can buy and sell token
 //when users buy token it is in USD and not ether
-//need chainlink integration. node runs on computer locally. not sure if contract owner needs libraries installed on their own machine to deploy chainlink portion of contract 
+//need chainlink integration to work to get live feed price data for token price equation
 
-//token_price_today = token price yesterday*(1+vixm_return_yesterday*signal_hat_yesterday) - in USD 
+// node runs on computer locally. not sure if contract owner needs libraries installed on their own machine to deploy chainlink portion of contract 
+//oken price for yesterday, set that equal estimated token performance from $1 invested prediction
+//go to ML model file, scroll down to out of sample $1 invested prediction
+//use pricing data from there to set the token_price_yesterday (several months worth). ask paola if it is correct
+//token_price_today = token price yesterday*(1+vixm_return_yesterday*signal_hat_yesterday) 
+//for functions, ask jason if we have everything he needs which is user buy, sell, transfer, purchase 
 
 
 //only deployer can mint tokens
@@ -42,14 +48,8 @@ contract VixCoin is ERC20, ERC20Detailed, ERC20Mintable, ERC20Capable {
 //owner can transfer contract to another
 contract VixCoin is Ownable {
     constructor(
-
     )
-
-
-
-
 }
-
 
 // set token price 
 
