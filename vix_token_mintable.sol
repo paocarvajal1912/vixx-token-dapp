@@ -9,8 +9,20 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 //token creation 
 //edit the line below for exchange rate 
+//initial supply is 10 million tokens 
+contract VixCoin is ERC20, ERC20Detailed, ERC20Mintable {
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint initial_supply
+    )
+        ERC20Detailed(VixCoin, VIX, 18)
+        public
+    {
+        mint(msg.sender, initial_supply);
+    }
 
-contract vix_token {
+contract VixCoin {
     using SafeMath for uint;
 
     address payable owner = msg.sender;

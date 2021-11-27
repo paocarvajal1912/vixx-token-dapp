@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 //FIX CHAINLINK INTEGRATION
+import "./vix_token_creation.sol";
 import "@chainlink/contracts/src/v0.5/KeeperCompatibleInterface.sol";
 
 /start of chainlink code
@@ -25,6 +26,42 @@ contract ChainlinkExample is ChainlinkClient {
     owner = msg.sender;
   }
 
+ function requestVolumeData() public returns (bytes32 requestId) 
+    {
+        Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+        // Set the URL to perform the GET request on
+        request.add("get", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD");
+        // Set the path to find the desired data in the API response, where the response format is:
+        // {"RAW":
+        //   {"ETH":
+        //    {"USD":
+        //     {
+        //      "VOLUME24HOUR": xxx.xxx,
+        //     }
+        //    }
+        //   }
+        //  }
+        request.add("path", "RAW.ETH.USD.VOLUME24HOUR");
+        // Multiply the result by 1000000000000000000 to remove decimals
+        int timesAmount = 10**18;
+        request.addInt("times", timesAmount);
+        // Sends the request
+        return sendChainlinkRequestTo(oracle, request, fee);
+    }
+    
+    /**
+     * Receive the response in the form of uint256
+     */ 
+    function fulfill(bytes32 _requestId, uint256 _volume) public recordChainlinkFulfillment(_requestId)
+    {
+        volume = _volume;
+    }
+    // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
+}
+
+
+
+
   // Creates a Chainlink request with the uint256 multiplier job
   // Ideally, you'd want to pass the oracle payment, address, and jobID as parameters as well
   // This will return the one day lagged price of whatever ticker you give it
@@ -48,6 +85,7 @@ contract ChainlinkExample is ChainlinkClient {
     sendChainlinkRequestTo(ORACLE_ADDRESS, req, ORACLE_PAYMENT);
   }
 
+
   // fulfill receives a uint256 data type
   function fulfill(bytes32 _requestId, uint256 _price)
     public
@@ -57,6 +95,7 @@ contract ChainlinkExample is ChainlinkClient {
     currentPrice = _price;
   }
   
+
   // withdrawLink allows the owner to withdraw any extra LINK on the contract
   function withdrawLink()
     public
@@ -66,10 +105,13 @@ contract ChainlinkExample is ChainlinkClient {
     require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
   }
   
+
+
   modifier onlyOwner() {
     require(msg.sender == owner);
     _;
   }
+  
   
    // A helper funciton to make the string a bytes32
   function stringToBytes32(string memory source) private pure returns (bytes32 result) {
