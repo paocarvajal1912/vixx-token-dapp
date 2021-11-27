@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link rel="shortcut icon" href="{% static '/img/favicon01.ico' %}" />
     {% block head %}
     {% endblock %}
 </head>
@@ -21,7 +22,7 @@
   {% endblock %}
   <span class="navigation-bar">
     <a href="{% url 'home' %}">Home | </a>
-    <a href="{% url 'about' %}">Meet the Team | </a>
+    <a href="{% url 'about' %}">About | </a>
     <a href="{% url 'signup' %}">Signup | </a>
     <a href="{% url 'login' %}">Login</a>
   </span>

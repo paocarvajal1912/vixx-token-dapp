@@ -1,13 +1,12 @@
-const nickname = document.getElementsByName('nickname')[0].content;
+const nickname = document.getElementsByName('nickname')[0].content.replace("\\s", " ");
 const public_address = document.getElementsByName('public_address')[0].content;
 const balance = parseFloat(document.getElementsByName('balance')[0].content).toFixed(2);
-
 
 const App = () => {
     function getPortfolioTable() {
         return (
             <div className="portfolio_card">
-                <table id="portfolio">
+                <table>
                     <thead>
                         <tr>
                             <th>Nickname</th>

@@ -108,10 +108,12 @@ def logout_view(request):
 def home(request):
     this_portfolio = Portfolio.objects.get(address=WEB3BACKEND["public_key"])    
     transaction_create_form = transaction_create(request)
+    print(this_portfolio.nickname)
 
     context = {
+        "user": this_portfolio.user,
         "balance": this_portfolio.balance,
-        "nickname": this_portfolio.nickname,
+        "nickname": "\s".join(this_portfolio.nickname.split(" ")),
         "public_address": this_portfolio.address,
         **transaction_create_form,
     }

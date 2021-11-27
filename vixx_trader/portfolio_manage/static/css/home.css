@@ -4,13 +4,35 @@ body {
     width: auto;
     height: auto;
     text-align: center;
-    font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;}
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+}
 
 header {
     height: 20%;
     margin: 0;
     padding: 0;
     position: relative;
+}
+
+body {    
+    background-image: url("../img/ml07.jpg") !important;
+    background-size: cover !important;
+}
+
+div {
+  position: relative;
+}
+
+h1 {
+    margin-top: 15px !important;
+}
+
+h3 {
+    margin: 10px 0;
+}
+
+table {
+    margin: 15px auto;
 }
 
 .div-title {
@@ -39,7 +61,7 @@ header {
 
 .div-col2-sub1-page-header {
     float: left;
-    width: 80%;
+    width: 60%;
     margin-top: 15px;
     padding: 0;
     align-items: right;
@@ -47,10 +69,26 @@ header {
 
 .div-col2-sub2-page-header {
     float: left;
-    width: 20%;
-    margin-top: 15px;
+    height: 40px;
+    width: 27%;
+    margin: 15px 0 0 0;
+    padding: 0 0 0 7px;
+    text-align: left;
+    /* background: red; */
+}
+
+.div-col2-sub3-page-header {
+    float: left;
+    width: 13%;
+    margin: 15px 0 0 0;
     padding: 0;
     text-align: right;
+    /* background: orange; */
+}
+
+.img-robohash {
+    height: 40px !important;
+    width: 40px !important;
 }
 
 .div-row-page-header:after {
@@ -59,26 +97,9 @@ header {
     clear: both;
 }
 
-h1 {
-    margin-top: 15px !important;
-}
-
-body {    
-    background-image: url("../img/ml07.jpg") !important;
-    background-size: cover !important;
-}
-
-div {
-  position: relative;
-}
-
 .page-title {
     margin: 0;
     padding: 0;
-}
-
-h3 {
-    margin: 10px 0;
 }
 
 .container {
@@ -143,10 +164,8 @@ h3 {
     margin: 0;
     padding: 0;
     border-radius: 0.5rem !important;
-}
-
-.button-metamask {
-    background: #3333ff !important;
+    border: solid 1px #444;
+    background: #5086bd !important;
 }
 
 .input-address-front {
@@ -157,6 +176,10 @@ h3 {
 .button-metamask:focus {
     box-shadow: none !important;
     outline: 0px !important;
+}
+  
+.button-metamask:active {
+transform: translateY(1px) !important;
 }
 
 .input-group-text {

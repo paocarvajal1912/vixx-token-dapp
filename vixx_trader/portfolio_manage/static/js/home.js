@@ -9,16 +9,30 @@ function myClock() {
     }, 1000)
 }
 
-function updateCurrencyCost() {
-    const currencyCost = document.getElementById("currency_cost");
-    const coinCount = document.getElementById("coin_count").value;
+function updateDepositCurrencyCost() {
+    const currencyCost = document.getElementById("deposit_currency_cost");
+    const coinCount = document.getElementById("deposit_coin_count").value;
 
     currencyCost.value = (parseFloat(coinCount) * parseFloat(coin_cost)).toFixed(2);
 }
 
-function updateCoinCount() {
-    const currencyCost = document.getElementById("currency_cost").value;
-    const coinCount = document.getElementById("coin_count");
+function updateDepositCoinCount() {
+    const currencyCost = document.getElementById("deposit_currency_cost").value;
+    const coinCount = document.getElementById("deposit_coin_count");
+
+    coinCount.value = (parseFloat(currencyCost) / parseFloat(coin_cost)).toFixed(6);
+}
+
+function updateWithdrawCurrencyCost() {
+    const currencyCost = document.getElementById("withdraw_currency_cost");
+    const coinCount = document.getElementById("withdraw_coin_count").value;
+
+    currencyCost.value = (parseFloat(coinCount) * parseFloat(coin_cost)).toFixed(2);
+}
+
+function updateWithdrawCoinCount() {
+    const currencyCost = document.getElementById("withdraw_currency_cost").value;
+    const coinCount = document.getElementById("withdraw_coin_count");
 
     coinCount.value = (parseFloat(currencyCost) / parseFloat(coin_cost)).toFixed(6);
 }

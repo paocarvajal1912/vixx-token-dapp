@@ -5,6 +5,7 @@ from django.db.models.fields import CharField
 
 class Portfolio(models.Model):
     address     = CharField(unique=True, max_length=64)
+    user        = CharField(unique=False, max_length=16, default="")
     nickname    = CharField(max_length=20, unique=False, default="")
     balance     = models.FloatField(default=0.0)
     coin_count  = models.FloatField(default=0.0)

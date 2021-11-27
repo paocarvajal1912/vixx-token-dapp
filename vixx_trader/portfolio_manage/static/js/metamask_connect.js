@@ -1,4 +1,3 @@
-const wallet_element = React.createElement;
 const { useState, useEffect } = React;
 const fromWei = (_ethBalance) => { return (_ethBalance / 10**18).toFixed(6) };
 
@@ -35,7 +34,7 @@ const App = () => {
       document.getElementById("input-address-front").appendChild(_account.anchor);
       document.getElementById("input-address").value = _account;
 
-      document.getElementById("img-robohash").src = `https://robohash.org/${_account.address}?set=set3`;
+      document.getElementById("img-robohash").src = `https://robohash.org/${_account.address}?set=set3;size=40x40`;
       document.getElementById("img-robohash").style.display = "inline";
     }
   }
@@ -61,6 +60,7 @@ const App = () => {
         return;
       }
 
+      // If new account sign on...
       if (accounts.length !== 0 && accounts[0] !== currentAccount) {
         const account = {
           address: accounts[0],
@@ -118,10 +118,12 @@ const App = () => {
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
 
+      // If new account sign on...
       if (accounts.length !== 0 && accounts[0] !== currentAccount) {
         getWalletConnection();
         return;
       }
+      // If no account...
       else if (accounts.length === 0) {        
         setCurrentAccount(null);
         setPortfolioValues(" ", 0.00, {"href": ""});
@@ -137,11 +139,21 @@ const App = () => {
   ethereum.on('chainChanged', getWalletStatus);
   getWalletStatus();
 
-  return (
-    <button id="button-metamask" className="button-metamask" onClick={setWalletConnection}>
-      Connect Wallet
-    </button>
-  );
+  
+  if (!currentAccount) {
+    return (
+      <button id="button-metamask" className="button-metamask" style={{ cursor: "pointer" }} onClick={setWalletConnection}>
+        Connect Wallet
+      </button>
+    );
+  }
+  else {
+    return (
+      <button id="button-metamask" className="button-metamask" style={{ cursor: "not-allowed" }} onClick={setWalletConnection} disabled>
+        Connect Wallet
+      </button>
+    );
+  };
 }
 
 const domContainer = document.getElementById('container-button-metamask');
