@@ -15,12 +15,15 @@ import environ
 from pathlib import Path
 
 
-env = environ.Env()
-environ.Env.read_env()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 BASE_DIR = Path(__file__).resolve().parent.parent
 ABI_DIR  = lambda app: os.path.join(BASE_DIR, app, "contracts\\compiled\\abi.json")
+
+
+# Load environment variables.
+env = environ.Env()
+environ.Env.read_env(os.path.join(ROOT_DIR, ".env"))
 
 
 # Quick-start development settings - unsuitable for production

@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.0",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@openzeppelin/hardhat-upgrades": "^1.12.0",
+    "chai": "^4.3.4",
+    "ethers": "^5.5.1",
+    "hardhat": "^2.7.0"
+  },
+  "name": "vixx-token-dapp",
+  "description": "<div id=\"top\"></div>",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fintech-Collaboration/vixx-token-dapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fintech-Collaboration/vixx-token-dapp/issues"
+  },
+  "homepage": "https://github.com/Fintech-Collaboration/vixx-token-dapp#readme"
+}
