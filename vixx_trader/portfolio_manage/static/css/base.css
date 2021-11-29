@@ -60,30 +60,30 @@ table {
 }
 
 .div-col2-sub1-page-header {
-    float: left;
-    width: 60%;
+    float: right;
+    height: 40px;
+    width: auto;
     margin-top: 15px;
     padding: 0;
     align-items: right;
 }
 
 .div-col2-sub2-page-header {
-    float: left;
+    float: right;
     height: 40px;
-    width: 27%;
-    margin: 15px 0 0 0;
-    padding: 0 0 0 7px;
+    width: auto;
+    margin-top: 15px;
+    padding: 0;
     text-align: left;
-    /* background: red; */
 }
 
 .div-col2-sub3-page-header {
-    float: left;
-    width: 13%;
-    margin: 15px 0 0 0;
+    float: right;
+    height: 40px;
+    width: auto;
+    margin-top: 15px;
     padding: 0;
     text-align: right;
-    /* background: orange; */
 }
 
 .img-robohash {
@@ -135,7 +135,8 @@ table {
     margin-top: 10px;
 }
 
-.container-button-metamask {
+.container-button-metamask,
+.input-group {
     margin: 0;
     padding: 0;
 }
@@ -161,7 +162,7 @@ table {
 }
 
 .button-metamask {
-    height: 35px;
+    height: 40px;
     width: 120px;
     color: white;
     margin: 0;
@@ -169,6 +170,12 @@ table {
     border-radius: 0.5rem !important;
     border: solid 1px #444;
     background: #5086bd !important;
+}
+
+.public-address {
+    margin: 0;
+    padding: 6px;
+    font-size: 16px;
 }
 
 .input-address-front {

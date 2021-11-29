@@ -1,29 +1,52 @@
 const { useState, useEffect } = React;
 const eth = new Eth(new Eth.HttpProvider('http://localhost:8000'));
 
+const sortMeta = (data) => {
+    return document.getElementsByName(data)[0].content.split("//s");
+}
 
-// class TransactionChecker {
-//     constructor(address) {
-//         this.address = address.toLowerCase();
-// }
+const subAddress = (addr, hash_type) => {
+  const sub_address = `${addr.substring(0, 5)}...${addr.substring(addr.length-4, addr.length)}`
 
-// async checkBlock() {
+    // Valid hash_type values are "tx", "address"
+    if (hash_type) {
+      return `<a href="https://kovan.etherscan.io/${hash_type}/${addr}" target="_blank">${sub_address}</a>`
+    }
+    else {
+      return sub_address
+    }
+}
 
-//   }
-// }
+const setTableHeader = (tr, hdr) => {
+    let th = tr.insertCell();
+    th.innerHTML = `<b>${hdr}</b>`;
+}
 
-//  var transactionChecker = new  TransactionChecker('0x69fb2a80542721682bfe8daa8fee847cddd1a267');
-//  transactionChecker.checkBlock();
+const setTableData = (tr, data) => {
+    let td = tr.insertCell();
+    td.width = "90px";
+
+    td.innerHTML = data;
+}
+
+const tx_hash            = sortMeta('tx_hash');
+const tx_contractAddress = sortMeta('tx_contractAddress');
+const tx_from            = sortMeta('tx_from');
+const tx_to              = sortMeta('tx_to');
+const tx_value           = sortMeta('tx_value');
+const tx_gasUsed         = sortMeta('tx_gasUsed');
+const tx_date            = sortMeta('tx_date');
+const tx_time            = sortMeta('tx_time');
 
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
 
   const setPortfolioValues = (_account, _balance, _opts) => {
-    const anchorAddress = document.getElementById("anchor-portfolio-address");
-    const ethBalance = document.getElementById("tabledata-portfolio-eth-balance");
+    const anchorAddress    = document.getElementById("anchor-portfolio-address");
+    const ethBalance       = document.getElementById("tabledata-portfolio-eth-balance");
     const publicAddressOut = document.getElementById("out-public-address");
-    const ethBalanceOut = document.getElementById("out-eth-balance");
+    const ethBalanceOut    = document.getElementById("out-eth-balance");
 
     if (_opts) {
       anchorAddress.textContent = _account;
@@ -56,6 +79,54 @@ const App = () => {
     }
   }
 
+  const setTransactionTable = (_account) => {
+    let transactionTable = document.getElementById("table-transaction-list");
+
+    try {
+      if (!_account || _account !== transactionTable.name) {
+        transactionTable.remove()
+        transactionTable = document.getElementById("table-transaction-list");
+      }
+    } catch (error) {
+      console.log(error);
+    };
+
+    console.log(transactionTable);
+    if (_account && !transactionTable) {
+      let tbl         = document.createElement('table');
+      tbl.id          = "table-transaction-list";
+      tbl.name        = _account;
+      tbl.style.width = '950px';
+
+      let header = tbl.createTHead();
+      let tr = header.insertRow(0);
+
+      setTableHeader(tr, "Transaction")
+      setTableHeader(tr, "Date");
+      setTableHeader(tr, "Time");
+      setTableHeader(tr, "Contract");
+      setTableHeader(tr, "From");
+      setTableHeader(tr, "To");
+      setTableHeader(tr, "Amount (wei)");
+
+      for(let i = 0; i < tx_from.length; i++){
+        if (tx_to[i] !== _account) { continue }
+
+          tr = tbl.insertRow();
+
+          setTableData(tr, subAddress(tx_hash[i], "tx"));
+          setTableData(tr, tx_date[i]);
+          setTableData(tr, tx_time[i]);
+          setTableData(tr, subAddress(tx_contractAddress[i], "address"));
+          setTableData(tr, subAddress(tx_from[i], "address"));
+          setTableData(tr, subAddress(tx_to[i], "address"));
+          setTableData(tr, tx_value[i]);
+      }
+
+      document.getElementById('container-transaction-table').appendChild(tbl);
+    }
+  }
+
   const getWalletConnection = async () => {
     try {
       const { ethereum } = window;
@@ -68,7 +139,6 @@ const App = () => {
       const accounts   = await ethereum.request({ method: "eth_requestAccounts" });
       const weiBalance = await eth.getBalance(accounts[0]);
       const ethBalance = Eth.fromWei(weiBalance, 'ether');
-      // console.log(eth);
       
       let block = await eth.getBlockByNumber("28575746", true);
       let number = block.number;
@@ -129,10 +199,10 @@ const App = () => {
       if (accounts.length !== 0 && accounts[0] !== currentAccount) {
         const account = {
           address: accounts[0],
-          href:    `https://kovan.etherscan.io/address/${accounts[0]}`,
+          href:    subAddress(accounts[0], "address"),
           target:  "_blank",
           name:    "public_address_front",
-          abbrv:   `${accounts[0].substring(0, 5)}...${accounts[0].substring(accounts[0].length-4, accounts[0].length)}`,
+          abbrv:   subAddress(accounts[0], null),
           anchor:  document.createElement("a")
         };
         
@@ -144,6 +214,7 @@ const App = () => {
         setCurrentAccount(account.address);
         setPortfolioValues(account, ethBalance);
         setWalletValues(account);
+        setTransactionTable(account.address);
       }
     }
     catch (error) {
@@ -193,6 +264,7 @@ const App = () => {
         setCurrentAccount(null);
         setPortfolioValues(" ", 0.00, {"href": ""});
         setWalletValues("0x00...", {"value": null});
+        setTransactionTable(null);
       }
     }
     catch(error) {

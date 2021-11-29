@@ -145,7 +145,7 @@ def meta_transaction_list(transactions):
     df = df.add_prefix("tx_")
     df = df.loc[df["tx_contractAddress"] == WEB3BACKEND["contract_address"].lower(), :]
 
-    if df == pd.DataFrame():
+    if df.empty:
         return {}
     else:
         df_dict = {col: df[col].to_list() for col in df.columns}
