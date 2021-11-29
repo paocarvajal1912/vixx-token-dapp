@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-artifacts/
 build/
 develop-eggs/
 dist/
@@ -128,6 +127,19 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+#####################
+# HARDHAT
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
 
 
 #####################
