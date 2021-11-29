@@ -1,5 +1,6 @@
 const { useState, useEffect } = React;
 const eth = new Eth(new Eth.HttpProvider('http://localhost:8000'));
+const noAccount = "0x00..."
 
 const sortMeta = (data) => {
     return document.getElementsByName(data)[0].content.split("//s");
@@ -29,6 +30,7 @@ const setTableData = (tr, data) => {
     td.innerHTML = data;
 }
 
+const contract_address   = document.getElementsByName('contract_address')[0].content;
 const tx_hash            = sortMeta('tx_hash');
 const tx_contractAddress = sortMeta('tx_contractAddress');
 const tx_from            = sortMeta('tx_from');
@@ -82,24 +84,25 @@ const App = () => {
     let transactionTable = document.getElementById("table-transaction-list");
 
     try {
+        console.log(transactionTable.name);
       if (!_account || _account !== transactionTable.name) {
         transactionTable.remove()
         transactionTable = document.getElementById("table-transaction-list");
       }
-    } catch (error) {
-      console.log(error);
-    };
-
-    console.log(transactionTable);
+    }
+    catch (error) {};
+    
     if (_account && !transactionTable) {
-      console.log(_account)
       let tbl         = document.createElement('table');
       tbl.id          = "table-transaction-list";
       tbl.name        = _account;
       tbl.style.width = '950px';
 
       let header = tbl.createTHead();
-      let tr = header.insertRow(0);
+      let tr     = header.insertRow(0);
+
+      let sameAccount  = false;
+      let sameContract = false;
 
       setTableHeader(tr, "Transaction")
       setTableHeader(tr, "Date");
@@ -110,9 +113,10 @@ const App = () => {
       setTableHeader(tr, "Amount (wei)");
 
       for(let i = 0; i < tx_from.length; i++){
-        console.log(tx_contractAddress[i])
-        if (tx_to[i] !== _account) { continue }
+        sameAccount  = (tx_to[i] === _account || tx_from[i] === _account);
+        sameContract = tx_contractAddress[i] === contract_address;
 
+        if (sameAccount && sameContract) {
           tr = tbl.insertRow();
 
           setTableData(tr, subAddress(tx_hash[i], "tx"));
@@ -122,6 +126,7 @@ const App = () => {
           setTableData(tr, subAddress(tx_from[i], "address"));
           setTableData(tr, subAddress(tx_to[i], "address"));
           setTableData(tr, tx_value[i]);
+        }
       }
 
       document.getElementById('container-transaction-table').appendChild(tbl);
@@ -189,7 +194,7 @@ const App = () => {
         }
       ];
 
-      const thing = await eth.contract(thisABI).at("0x64C172F084f56E15Fc3410869e9641172aEEb5E8");
+      const thing  = await eth.contract(thisABI).at("0x64C172F084f56E15Fc3410869e9641172aEEb5E8");
       // console.log(thing.totalSupply)
 
       if (currentAccount) {
@@ -252,20 +257,35 @@ const App = () => {
   const getWalletStatus = async () => {
     try {
       const { ethereum } = window;
-
       const accounts = await ethereum.request({ method: "eth_accounts" });
+      const currentUrl = window.location.href;
 
       // If new account sign on...
       if (accounts.length !== 0 && accounts[0] !== currentAccount) {
+        const newUrl = `http://localhost:8000/portfolio/?id=${accounts[0]}`;
+
         getWalletConnection();
+
+        // Need to refresh page with new url to exercise Django view
+        if (currentUrl !== newUrl) {
+          window.open(newUrl, "_top");
+        }
+
         return;
       }
       // If no account...
-      else if (accounts.length === 0) {        
+      else if (accounts.length === 0) {
+        const newUrl = `http://localhost:8000/portfolio/?id=${noAccount}`;
+       
         setCurrentAccount(null);
         setPortfolioValues(" ", 0.00, {"href": ""});
-        setWalletValues("0x00...", {"value": null});
+        setWalletValues(noAccount, {"value": null});
         setTransactionTable(null);
+
+        // Need to refresh page with new url to exercise Django view
+        if (currentUrl !== newUrl) {
+          window.open(newUrl, "_top");
+        }
       }
     }
     catch(error) {
@@ -276,7 +296,6 @@ const App = () => {
   ethereum.on('accountsChanged', getWalletStatus);
   ethereum.on('chainChanged', getWalletStatus);
   getWalletStatus();
-
   
   if (!currentAccount) {
     return (

@@ -17,9 +17,12 @@ const subAddress = (addr, hash_type) => {
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
 
-  const setWalletValues = (_account, _opts) => {   
+  const setWalletValues = (_account, _opts) => {
+    const publicAddressOut = document.getElementById("out-public-address");
+
     if (_opts) {
       document.getElementById("public-address").textContent = _account;
+      publicAddressOut.value = _account;
 
       document.getElementById("img-robohash").src = "";
       document.getElementById("img-robohash").style.display = "none";
@@ -27,6 +30,7 @@ const App = () => {
     else {
       document.getElementById("public-address").textContent = null;
       document.getElementById("public-address").appendChild(_account.anchor);
+      publicAddressOut.value = _account.address;
 
       document.getElementById("img-robohash").src = `https://robohash.org/${_account.address}?set=set3;size=40x40`;
       document.getElementById("img-robohash").style.display = "inline";

@@ -25,7 +25,7 @@ def web3backend():
     return {
         "public_key":       public_key,
         "private_key":      private_key,
-        "contract_address": contract_address,
+        "contract_address": contract_address.lower(),
         "abi_path":         abi_path,
         "contract":         contract,
     }

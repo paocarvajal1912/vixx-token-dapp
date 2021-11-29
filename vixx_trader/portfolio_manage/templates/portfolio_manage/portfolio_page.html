@@ -10,6 +10,7 @@
       <meta name="nickname" content={{ user }} />
       <meta name="public_address" content={{ public_address }} />
       <meta name="balance" content={{ balance }} />
+      <meta name="contract_address" content={{ contract_address }} />
       <meta name="coin_cost" content={{ coin_cost }} />
 
       <meta name="tx_hash" content={{ tx_hash }} />
@@ -138,7 +139,6 @@
       <h3>Transaction History</h3>
 
       <div id="container-transaction-table" class="container-transaction-table">
-        <script src="{% static '/js/transaction_table.js' %}"></script>
       </div>
     {% endblock %}
     

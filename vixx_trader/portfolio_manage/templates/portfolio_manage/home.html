@@ -13,50 +13,78 @@
         <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-        <link rel="stylesheet" href="{% static '/css/portfolio_base.css' %}">
+        
+        <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.0.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.0.min.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="{% static '/css/home.css' %}">
         <link rel="shortcut icon" href="{% static '/img/favicon01.ico' %}" />
-        {% block head %}
-        {% endblock %}
     </head>
 
     <header>
-        {% block header %}
-        {% endblock %}
         <div class="div-row-page-header">
           <div class="div-col1-page-header">
-            <h1 class="page-title">VIXCOIN</h1>
+            <img class="img-header" src="{% static '/img/vixcoin_header02.png' %}" alt="VIXCOIN header" />
+          </div>
+
+          <div class="div-col2-page-header">
           </div>
           
-          <div class="div-col2-page-header">
-            <div class="div-col2-sub1-page-header">          
+          <div class="div-col3-page-header">
+            <div class="div-col3-sub1-page-header">
               <div id="container-button-metamask" class="container-button-metamask">
                 <script type="text/babel" src="{% static '/js/basic_metamask_connect.js' %}"></script>
               </div>
             </div>
-            <div class="div-col2-sub2-page-header">
-              <div className="input-group">
-                <p name="public_address_front" id="public-address" class="public-address">0x00...</p>
-                <input type="hidden" name="out_public_address" id="out-public-address" placeholder="0x00" />
-              </div>
+            <div class="div-col3-sub2-page-header">
+                <div className="input-group">
+                  <p name="public_address_front" id="public-address" class="public-address">0x00...</p>
+                  
+                </div>
             </div>
-            <div class="div-col2-sub3-page-header">
+            <div class="div-col3-sub3-page-header">
               <div className="input-group">
                 <img id="img-robohash" src="" alt="robohash" style="display: none;" />
               </div>
             </div>
+
+            
+            <div class="div-page-link">
+              <a class="page-link" href="{% url 'about' %}">About Us</a>
+            </div>
           </div>
         </div>
-
-        <span class="navigation-bar">
-            <a href="{% url 'home' %}">Home | </a>
-            <a href="{% url 'about' %}">About | </a>
-            <a href="{% url 'portfolio' %}">Portfolio</a>
-        </span>
     </header>
 
     <body>
-        {% block content %}
-        {% endblock %}
+      <div class="container">
+
+        <h2>A DeFi/CeFi Hybrid Financial Strategy</h2>
+          <div class="div-button-enter-app">
+            <form action="{% url 'portfolio' %}" method="GET">
+              <button class="button-enter-app"><strong>Enter App</strong></button>
+              <input type="hidden" name="id" id="out-public-address" placeholder="0x00" />
+            </form>
+          </div>
+
+        <h3>ACCESSIBLE MACHINE LEARNING DRIVEN INVESTING</h3>
+        
+        <div class="container-plotter">
+          {% autoescape off %}
+          <div class="user-card">
+            <h4><span class="label-large-caps">V</span>IX<span class="label-large-caps">C</span>OIN Growth Performance</h4>
+            <div class="plotaxis">{{ plot_growth }}</div>
+          </div>
+          {% endautoescape %}
+
+          {% autoescape off %}
+          <div class="user-card">
+            <h4><span class="label-large-caps">V</span>IX<span class="label-large-caps">C</span>OIN Return Performance</h4>
+            <div class="plotaxis">{{ plot_returns }}</div>
+          </div>
+          {% endautoescape %}
+        </div>
+      </div>
     </body>
 </html>
 
