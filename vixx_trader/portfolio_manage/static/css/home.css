@@ -16,7 +16,7 @@ header {
 }
 
 body {
-    background-image: url("../img/home09.jpg") !important;
+    background-image: url("../img/ml07.jpg") !important;
     background-size: cover !important;
 }
 
@@ -68,8 +68,8 @@ div::-webkit-scrollbar-track {
 }
 
 div::-webkit-scrollbar-thumb {
-    background-color: #5086bd;    /* color of the scroll thumb */
-    border-radius: 5px;       /* roundness of the scroll thumb */
+    background-color: #5086bd;  /* color of the scroll thumb */
+    border-radius: 5px;         /* roundness of the scroll thumb */
     border: 3px solid #30649b;  /* creates padding around scroll thumb */
 }
 
