@@ -1,4 +1,4 @@
-const coin_cost = document.getElementsByName('coin_cost')[0].content;
+const COIN_COST = document.getElementsByName('coin_cost')[0].content;
 
 function myClock() {
     setTimeout(function() {   
@@ -10,31 +10,55 @@ function myClock() {
 }
 
 function updateDepositCurrencyCost() {
-    const currencyCost = document.getElementById("deposit_currency_cost");
-    const coinCount = document.getElementById("deposit_coin_count").value;
+    const depositCurrencyCost = document.getElementById("deposit_currency_cost");
+    const depositCoinCount = document.getElementById("deposit_coin_count").value;
 
-    currencyCost.value = (parseFloat(coinCount) * parseFloat(coin_cost)).toFixed(2);
+    depositCurrencyCost.value = (parseFloat(depositCoinCount) * parseFloat(COIN_COST)).toFixed(2);
+
+    _defaultWithdrawCoin();
 }
 
 function updateDepositCoinCount() {
-    const currencyCost = document.getElementById("deposit_currency_cost").value;
-    const coinCount = document.getElementById("deposit_coin_count");
+    const depositCurrencyCost = document.getElementById("deposit_currency_cost").value;
+    const depositCoinCount = document.getElementById("deposit_coin_count");
 
-    coinCount.value = (parseFloat(currencyCost) / parseFloat(coin_cost)).toFixed(6);
+    depositCoinCount.value = (parseFloat(depositCurrencyCost) / parseFloat(COIN_COST)).toFixed(6);
+
+    _defaultWithdrawCoin();
 }
 
 function updateWithdrawCurrencyCost() {
-    const currencyCost = document.getElementById("withdraw_currency_cost");
-    const coinCount = document.getElementById("withdraw_coin_count").value;
+    const withdrawCurrencyCost = document.getElementById("withdraw_currency_cost");
+    const withdrawCoinCount = document.getElementById("withdraw_coin_count").value;
 
-    currencyCost.value = (parseFloat(coinCount) * parseFloat(coin_cost)).toFixed(2);
+    withdrawCurrencyCost.value = (parseFloat(withdrawCoinCount) * parseFloat(COIN_COST)).toFixed(2);
+
+    _defaultDepositCoin();
 }
 
 function updateWithdrawCoinCount() {
-    const currencyCost = document.getElementById("withdraw_currency_cost").value;
-    const coinCount = document.getElementById("withdraw_coin_count");
+    const withdrawCurrencyCost = document.getElementById("withdraw_currency_cost").value;
+    const withdrawCoinCount = document.getElementById("withdraw_coin_count");
 
-    coinCount.value = (parseFloat(currencyCost) / parseFloat(coin_cost)).toFixed(6);
+    withdrawCoinCount.value = (parseFloat(withdrawCurrencyCost) / parseFloat(COIN_COST)).toFixed(6);
+
+    _defaultDepositCoin();
+}
+
+function _defaultWithdrawCoin() {    
+    const withdrawCoinCount = document.getElementById("withdraw_coin_count");
+    const withdrawCurrencyCost = document.getElementById("withdraw_currency_cost");
+
+    withdrawCoinCount.value = 0.00;
+    withdrawCurrencyCost.value = 0.00;
+}
+
+function _defaultDepositCoin() {
+    const depositCoinCount = document.getElementById("deposit_coin_count");
+    const depositCurrencyCost = document.getElementById("deposit_currency_cost");
+
+    depositCoinCount.value = 0.00;
+    depositCurrencyCost.value = 0.00;
 }
 
 myClock();

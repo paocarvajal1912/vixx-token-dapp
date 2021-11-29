@@ -112,6 +112,10 @@ CONTRACT = {
     'SMART_CONTRACT_ADDRESS': env('SMART_CONTRACT_ADDRESS'),
 }
 
+ETHERSCAN = {
+    'API_KEY': env('ETHERSCAN'),
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

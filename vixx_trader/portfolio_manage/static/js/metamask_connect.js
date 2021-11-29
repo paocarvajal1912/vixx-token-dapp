@@ -1,5 +1,19 @@
 const { useState, useEffect } = React;
-const fromWei = (_ethBalance) => { return (_ethBalance / 10**18).toFixed(6) };
+const eth = new Eth(new Eth.HttpProvider('http://localhost:8000'));
+
+
+// class TransactionChecker {
+//     constructor(address) {
+//         this.address = address.toLowerCase();
+// }
+
+// async checkBlock() {
+
+//   }
+// }
+
+//  var transactionChecker = new  TransactionChecker('0x69fb2a80542721682bfe8daa8fee847cddd1a267');
+//  transactionChecker.checkBlock();
 
 
 const App = () => {
@@ -8,6 +22,8 @@ const App = () => {
   const setPortfolioValues = (_account, _balance, _opts) => {
     const anchorAddress = document.getElementById("anchor-portfolio-address");
     const ethBalance = document.getElementById("tabledata-portfolio-eth-balance");
+    const publicAddressOut = document.getElementById("out-public-address");
+    const ethBalanceOut = document.getElementById("out-eth-balance");
 
     if (_opts) {
       anchorAddress.textContent = _account;
@@ -16,23 +32,24 @@ const App = () => {
     else {
       anchorAddress.textContent = _account.abbrv;
       anchorAddress.href = _account.href;
+      publicAddressOut.value = _account.address;
+      ethBalanceOut.value = _balance;
+      console.log(_account.address)
     }
 
-    ethBalance.textContent = `${_balance} ETH`;
+    ethBalance.textContent = `${_balance}`;
   }
 
   const setWalletValues = (_account, _opts) => {   
     if (_opts) {
-      document.getElementById("input-address-front").textContent = _account;
-      document.getElementById("input-address").value = _opts["value"];
+      document.getElementById("public-address").textContent = _account;
 
       document.getElementById("img-robohash").src = "";
       document.getElementById("img-robohash").style.display = "none";
     }
     else {
-      document.getElementById("input-address-front").textContent = null;
-      document.getElementById("input-address-front").appendChild(_account.anchor);
-      document.getElementById("input-address").value = _account;
+      document.getElementById("public-address").textContent = null;
+      document.getElementById("public-address").appendChild(_account.anchor);
 
       document.getElementById("img-robohash").src = `https://robohash.org/${_account.address}?set=set3;size=40x40`;
       document.getElementById("img-robohash").style.display = "inline";
@@ -42,9 +59,6 @@ const App = () => {
   const getWalletConnection = async () => {
     try {
       const { ethereum } = window;
-      console.log(ethereum);
-
-
       if (!ethereum) {
         alert("Get MetaMask please :)");
         return;
@@ -53,8 +67,59 @@ const App = () => {
       const eth = new Eth(web3.currentProvider);
       const accounts   = await ethereum.request({ method: "eth_requestAccounts" });
       const weiBalance = await eth.getBalance(accounts[0]);
-      const ethBalance = fromWei(parseFloat(weiBalance));
-      console.log(eth);
+      const ethBalance = Eth.fromWei(weiBalance, 'ether');
+      // console.log(eth);
+      
+      let block = await eth.getBlockByNumber("28575746", true);
+      let number = block.number;
+      let transactions = block.transactions;
+
+      if (block != null && block.transactions != null) {
+        for (let txHash of block.transactions) {
+          let tx = await eth.getTransactionByHash(txHash.hash);
+          if (accounts[0] == tx.from.toLowerCase()) {
+            console.log("from: " + tx.from.toLowerCase() + " to: " + tx.to.toLowerCase() + " value: " + tx.value);
+          }
+        }
+      }
+
+      const thisABI = [
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_recipient",
+              "type": "address"
+            }
+          ],
+          "name": "withdraw",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [],
+          "name": "deposit",
+          "outputs": [],
+          "payable": true,
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "payable": true,
+          "stateMutability": "payable",
+          "type": "fallback"
+        }
+      ];
+
+      const thing = await eth.contract(thisABI).at("0x64C172F084f56E15Fc3410869e9641172aEEb5E8");
+      // console.log(thing.totalSupply)
 
       if (currentAccount) {
         return;
@@ -127,7 +192,7 @@ const App = () => {
       else if (accounts.length === 0) {        
         setCurrentAccount(null);
         setPortfolioValues(" ", 0.00, {"href": ""});
-        setWalletValues("0x00", {"value": null});
+        setWalletValues("0x00...", {"value": null});
       }
     }
     catch(error) {

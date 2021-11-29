@@ -12,3 +12,11 @@ contract VXCNFixedSupply is ERC20 {
     }
 }
 
+contract VXCNWithMinerREward is ERC20 {
+    constructor() ERC20("Reward", "RWD") {}
+
+    function mintMinerReward() {
+        _mint(block.coinbase, 1000);
+    }
+}
+

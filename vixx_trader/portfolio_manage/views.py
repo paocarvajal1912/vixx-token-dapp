@@ -1,9 +1,13 @@
 # WEB3 IMPORTS
 import os
 import json
+import requests
 
-from web3   import Web3
-from dotenv import load_dotenv
+import pandas as pd
+
+from dotenv   import load_dotenv
+from requests import Session
+
 
 # DJANGO IMPORTS
 from django.http                    import HttpResponseRedirect
@@ -25,32 +29,8 @@ from .forms  import (
     TransactionCreateForm,
 )
 
+from .utils.web3 import web3backend
 
-def web3backend():
-    # Account Credentials
-    public_key  = settings.WALLET["PRIMARY_PUBLIC_KEY"]
-    private_key = settings.WALLET["PRIMARY_PRIVATE_KEY"]
-
-    # Alchemy KovanApp URL
-    url  = settings.CONTRACT["ALCHEMY_URL_KEY"]
-    web3 = Web3(Web3.HTTPProvider(url))
-
-    # Contract's Address and ABI
-    contract_address = web3.toChecksumAddress(settings.CONTRACT["SMART_CONTRACT_ADDRESS"])
-    abi_path         = settings.ABI_DIR(app="portfolio_manage")
-
-    with open(abi_path) as f:
-        abi = json.load(f)
-
-    contract = web3.eth.contract(address=contract_address, abi=abi)
-
-    return {
-        "public_key":       public_key,
-        "private_key":      private_key,
-        "contract_address": contract_address,
-        "abi_path":         abi_path,
-        "contract":         contract,
-    }
 
 WEB3BACKEND = web3backend()
 
@@ -106,19 +86,46 @@ def logout_view(request):
 
 
 def home(request):
+    if request.method == "POST":
+        public_address = request.POST["out_public_address"]
+
+        url = "http://api-kovan.etherscan.io/api" + \
+              "?module=account"                   + \
+              "&action=tokentx"                   + \
+              f"&address={public_address}"        + \
+              "&startblock=0"                     + \
+              "&endblock=999999999"               + \
+              "&sort=asc"                         + \
+              f"&apikey={settings.ETHERSCAN['API_KEY']}"
+
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, '
+                                 'like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+
+        response = requests.get(url, headers=headers)
+        response = json.loads(response.content)
+
+        df_response = pd.DataFrame.from_dict(response["result"])
+
+        transactions = meta_transaction_list(df_response)
+        print(transactions.keys())
+    else:
+        transactions = {}
+
     this_portfolio = Portfolio.objects.get(address=WEB3BACKEND["public_key"])    
-    transaction_create_form = transaction_create(request)
     print(this_portfolio.nickname)
+
+    # breakpoint()
 
     context = {
         "user": this_portfolio.user,
         "balance": this_portfolio.balance,
-        "nickname": "\s".join(this_portfolio.nickname.split(" ")),
+        "nickname": "//s".join(this_portfolio.nickname.split(" ")),
         "public_address": this_portfolio.address,
-        **transaction_create_form,
+        "coin_cost": 1.4,
+        **transactions,
     }
 
-    return render(request, "portfolio_manage/home.html", context)
+    return render(request, "portfolio_manage/portfolio_page.html", context)
 
 
 def about(request):
@@ -126,31 +133,25 @@ def about(request):
     return render(request, "portfolio_manage/about.html", context)
 
 
-def transaction_create(request):
-    this_portfolio = Portfolio.objects.get(address=WEB3BACKEND["public_key"])
-    
-    if request.method == "POST":
-        print("--------------------- in transaction_create")
-        form = TransactionCreateForm(request.POST)
-        print(form)
-        print(request.POST)
+def meta_transaction_list(transactions):
+    columns2keep    = ["timeStamp", "hash", "from", "contractAddress", "to", "value", "gasUsed"]
+    df              = transactions.filter(items=columns2keep)
 
-        print(float(request.POST["coin_count"]))
-        this_portfolio.balance += float(request.POST["coin_count"])
-        this_portfolio.save()
+    df["timeStamp"] = pd.to_datetime(df["timeStamp"], unit='s')
+    df["date"]      = df["timeStamp"].dt.date
+    df["time"]      = df["timeStamp"].dt.time
+    df              = df.drop(columns=["timeStamp"])
+
+    df = df.add_prefix("tx_")
+    df = df.loc[df["tx_contractAddress"] == WEB3BACKEND["contract_address"].lower(), :]
+
+    if df == pd.DataFrame():
+        return {}
     else:
-        form = TransactionCreateForm()
+        df_dict = {col: df[col].to_list() for col in df.columns}
+        df_dict = {key: "//s".join([str(val) for val in vals]) for key, vals in df_dict.items()}
 
-    context = {
-        "form": form,
-        "coin_cost": 1.4,
-    }
-
-    form.coin_cost = context["coin_cost"]
-
-    return context
-
-    # return render(request, "portfolio_manage/transaction_create.html", context)
+        return df_dict
 
 
 # def transaction_create_view(request):

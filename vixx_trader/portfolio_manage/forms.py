@@ -13,9 +13,6 @@ from .models import (
     Transaction,
 )
 
-from .web3auth_settings import app_settings
-from .utils import validate_eth_address
-
 
 class UserCreateForm(UserCreationForm):
     class Meta:

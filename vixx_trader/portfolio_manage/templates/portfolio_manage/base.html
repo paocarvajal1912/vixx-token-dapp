@@ -1,35 +1,62 @@
 {% load static %}
 
 <!DOCTYPE html>
-<head>    
-    <title>VIXCOIN</title>
-    
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <!-- <script src="https://unpkg.com/web3@1.6.1/dist/web3.min.js"></script> -->
-    <script src="http://rawgit.com/ethereum/web3.js/0.16.0/dist/web3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethjs@0.3.0/dist/ethjs.min.js"></script>
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <link rel="shortcut icon" href="{% static '/img/favicon01.ico' %}" />
-    {% block head %}
-    {% endblock %}
-</head>
+<html lang="en">
+    <head>    
+        <title>VIXCOIN</title>
+        
+        <!-- Load React. -->
+        <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+        <!-- <script src="https://unpkg.com/web3@1.6.1/dist/web3.min.js"></script> -->
+        <script src="http://rawgit.com/ethereum/web3.js/0.16.0/dist/web3.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/ethjs@0.3.0/dist/ethjs.min.js"></script>
+        <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <link rel="stylesheet" href="{% static '/css/base.css' %}">
+        <link rel="shortcut icon" href="{% static '/img/favicon01.ico' %}" />
+        {% block head %}
+        {% endblock %}
+    </head>
 
-<header>
-  {% block header %}
-  {% endblock %}
-  <span class="navigation-bar">
-    <a href="{% url 'home' %}">Home | </a>
-    <a href="{% url 'about' %}">About | </a>
-    <a href="{% url 'signup' %}">Signup | </a>
-    <a href="{% url 'login' %}">Login</a>
-  </span>
-</header>
+    <header>
+        {% block header %}
+        {% endblock %}
+        <div class="div-row-page-header">
+          <div class="div-col1-page-header">
+            <h1 class="page-title">{{ user }}'s Portfolio</h1>
+          </div>
+          
+          <div class="div-col2-page-header">
+            <div class="div-col2-sub1-page-header">          
+              <div id="container-button-metamask" class="container-button-metamask">
+                <script type="text/babel" src="{% static '/js/metamask_connect.js' %}"></script>
+              </div>
+            </div>
+            <div class="div-col2-sub2-page-header">
+              <div className="input-group">
+                <p name="public_address_front" id="public-address" class="public-address">0x00...</p>
+              </div>
+            </div>
+            <div class="div-col2-sub3-page-header">
+              <div className="input-group">
+                <img id="img-robohash" src="" alt="robohash" style="display: none;" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-<body>
-  {% block content %}
-  {% endblock %}
-</body>
+        <span class="navigation-bar">
+            <a href="{% url 'home' %}">Home | </a>
+            <a href="{% url 'about' %}">About | </a>
+            <a href="{% url 'signup' %}">Signup | </a>
+            <a href="{% url 'login' %}">Login</a>
+        </span>
+    </header>
+
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
 
