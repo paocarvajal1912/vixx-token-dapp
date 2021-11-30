@@ -1,4 +1,4 @@
-# Vixm Predictor Functions
+# Vixm Feature Functions
 
 import pandas as pd
 from arch import arch_model
@@ -64,7 +64,7 @@ def garch_fit_and_predict(series, ticker, horizon=1, p=1, q=1, o=1, print_series
     return serie_garch_before_shift
 
 
-def correlation_filter(series, min_corr=0.20, key_column='^VIX', eliminate_first_column=False):
+def correlation_filter(series, min_corr=0.20, key_column='VIXM', eliminate_first_column=False):
     
     """
     
