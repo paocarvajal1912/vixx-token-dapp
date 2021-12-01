@@ -5,29 +5,6 @@
 <html lang="en">
   <head>
       {% block head %}
-
-      <meta name="nickname" content={{ nickname }} />
-      <meta name="nickname" content={{ user }} />
-      <meta name="public_address" content={{ public_address }} />
-      <meta name="balance" content={{ balance }} />
-      <meta name="contract_address" content={{ contract_address }} />
-      <meta name="coin_cost" content={{ coin_cost }} />
-
-      <meta name="tx_hash" content={{ tx_hash }} />
-      <meta name="tx_contractAddress" content={{ tx_contractAddress }} />
-      <meta name="tx_from" content={{ tx_from }} />
-      <meta name="tx_to" content={{ tx_to }} />
-      <meta name="tx_value" content={{ tx_value }} />
-      <meta name="tx_gasUsed" content={{ tx_gasUsed }} />
-      <meta name="tx_date" content={{ tx_date }} />
-      <meta name="tx_time" content={{ tx_time }} />
-
-      <link rel="stylesheet" href="{% static '/css/input_text.css' %}">
-      <link rel="stylesheet" href="{% static '/css/button.css' %}">
-      <input name="time_executed" id="time_executed" type="hidden" disabled></input>
-
-      <script src="{% static '/js/home.js' %}"></script>
-
       {% endblock %}
   </head>
 

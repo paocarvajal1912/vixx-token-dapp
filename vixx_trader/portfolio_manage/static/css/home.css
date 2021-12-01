@@ -31,7 +31,7 @@ h1 {
 }
 
 h2 {
-    margin: -30px 95px 25px 0;
+    margin: -50px 25px 25px 0;
     padding: 0;
     color: whitesmoke;
     font-size: 48px;
@@ -89,14 +89,14 @@ div::-webkit-scrollbar-thumb {
     margin-top: 20px;
     padding: 0 0 0 20px;
     float: left;
-    width: 22%;
+    width: 20%;
     text-align: left;
 }
 
 .div-col2-page-header {
     margin-top: 20px;
     float: left;
-    width: 62%;
+    width: 60%;
     padding-left: 0;
     text-align: center;
 }
@@ -104,15 +104,10 @@ div::-webkit-scrollbar-thumb {
 .div-col3-page-header {
     float: left;
     height: 60px;
-    width: 14%;
+    width: 20%;
     margin-top: 20px;
-    padding: 10px 15px 10px 10px;
+    padding: 10px 20px 10px 10px;
     text-align: center;
-    background: whitesmoke;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 5px;
 }
 
 .div-col3-sub1-page-header {
@@ -154,7 +149,7 @@ div::-webkit-scrollbar-thumb {
 }
 
 .img-header {
-    width: 70%;
+    width: 266px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -184,9 +179,11 @@ div::-webkit-scrollbar-thumb {
 }
 
 .container-plotter {
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
+    width: 1200px;
     max-height: 600px;
+    direction: rtl;
     overflow: auto;
 }
 
@@ -216,8 +213,8 @@ div::-webkit-scrollbar-thumb {
     margin: 0;
 }
 
-.div-page-link {
-    margin-top: 60px;
+#about-page-link {
+    margin: 10px 0 0 85px;
     padding-bottom: 20px;
 }
 

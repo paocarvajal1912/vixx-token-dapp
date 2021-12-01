@@ -25,6 +25,10 @@
         <div class="div-row-page-header">
           <div class="div-col1-page-header">
             <img class="img-header" src="{% static '/img/vixcoin_header02.png' %}" alt="VIXCOIN header" />
+            
+            <div class="div-page-link" id="about-page-link">
+              <a class="page-link" href="{% url 'about' %}">About Us</a>
+            </div>
           </div>
 
           <div class="div-col2-page-header">
@@ -46,11 +50,6 @@
               <div className="input-group">
                 <img id="img-robohash" src="" alt="robohash" style="display: none;" />
               </div>
-            </div>
-
-            
-            <div class="div-page-link">
-              <a class="page-link" href="{% url 'about' %}">About Us</a>
             </div>
           </div>
         </div>

@@ -15,19 +15,19 @@ def web3backend():
 
     # Contract's Address and ABI
     contract_address = web3.toChecksumAddress(settings.CONTRACT["SMART_CONTRACT_ADDRESS"])
-    abi_path         = settings.ABI_DIR(app="portfolio_manage")
+    # abi_path         = settings.ABI_DIR(app="portfolio_manage")
 
-    with open(abi_path) as f:
-        abi = json.load(f)
+    # with open(abi_path) as f:
+    #     abi = json.load(f)
 
-    contract = web3.eth.contract(address=contract_address, abi=abi)
+    # contract = web3.eth.contract(address=contract_address, abi=abi)
 
     return {
         "public_key":       public_key,
         "private_key":      private_key,
         "contract_address": contract_address.lower(),
-        "abi_path":         abi_path,
-        "contract":         contract,
+        # "abi_path":         abi_path,
+        # "contract":         contract,
     }
     
     

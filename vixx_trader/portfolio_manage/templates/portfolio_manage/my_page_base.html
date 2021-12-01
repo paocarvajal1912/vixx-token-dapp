@@ -5,8 +5,8 @@
     <head>    
         <title>VIXCOIN</title>
 
+        <meta name="user" content={{ user }} />
         <meta name="nickname" content={{ nickname }} />
-        <meta name="nickname" content={{ user }} />
         <meta name="public_address" content={{ public_address }} />
         <meta name="balance" content={{ balance }} />
         <meta name="contract_address" content={{ contract_address }} />
@@ -35,7 +35,7 @@
         <script src="{% static '/abi/VixcoinToken.json' %}"></script>
         <script src="{% static '/abi/VixcoinTokenCrowdsale.json' %}"></script>
 
-        <link rel="stylesheet" href="{% static '/css/portfolio_base.css' %}" />
+        <link rel="stylesheet" href="{% static '/css/profile_base.css' %}" />
         <link rel="stylesheet" href="{% static '/css/input_text.css' %}">
         <link rel="stylesheet" href="{% static '/css/button.css' %}">
         <link rel="shortcut icon" href="{% static '/img/favicon01.ico' %}" />
@@ -48,17 +48,13 @@
         {% endblock %}
         <div class="div-row-page-header">
           <div class="div-col1-page-header">
-            {% if user %}
-              <h1 class="page-title">{{ user }}'s Portfolio</h1>
-            {% else %}
-              <h1 class="page-title">Your Portfolio</h1>
-            {% endif %}
+            <h1 class="page-title" id="page-title"></h1>
           </div>
           
           <div class="div-col2-page-header">
             <div class="div-col2-sub1-page-header">
               <div id="container-button-metamask" class="container-button-metamask">
-                <script type="text/babel" src="{% static '/js/portfolio_metamask_connect.js' %}"></script>
+                <script type="text/babel" src="{% static '/js/profile_metamask_connect.js' %}"></script>
               </div>
             </div>
             <div class="div-col2-sub2-page-header">
@@ -77,7 +73,7 @@
         <span class="navigation-bar">
             <a href="{% url 'home' %}">Home</a> | 
             <a href="{% url 'about' %}">About Us</a> | 
-            <a href="{% url 'mypage' %}">Profile</a>
+            <a href="{% url 'portfolio' %}">Portfolio</a>
         </span>
     </header>
 

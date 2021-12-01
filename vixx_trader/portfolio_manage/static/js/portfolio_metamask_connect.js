@@ -1,22 +1,7 @@
 const { useState, useEffect } = React;
 const eth = new Eth(new Eth.HttpProvider('http://localhost:8000'));
-const noAccount = "0x00..."
+const { ethers } = ethers;
 
-const sortMeta = (data) => {
-    return document.getElementsByName(data)[0].content.split("//s");
-}
-
-const subAddress = (addr, hash_type) => {
-  const sub_address = `${addr.substring(0, 5)}...${addr.substring(addr.length-4, addr.length)}`
-
-    // Valid hash_type values are "tx", "address"
-    if (hash_type) {
-      return `<a href="https://kovan.etherscan.io/${hash_type}/${addr}" target="_blank">${sub_address}</a>`
-    }
-    else {
-      return sub_address
-    }
-}
 
 const setTableHeader = (tr, hdr) => {
     let th = tr.insertCell();
@@ -30,35 +15,56 @@ const setTableData = (tr, data) => {
     td.innerHTML = data;
 }
 
-const contract_address   = document.getElementsByName('contract_address')[0].content;
-const tx_hash            = sortMeta('tx_hash');
-const tx_contractAddress = sortMeta('tx_contractAddress');
-const tx_from            = sortMeta('tx_from');
-const tx_to              = sortMeta('tx_to');
-const tx_value           = sortMeta('tx_value');
-const tx_gasUsed         = sortMeta('tx_gasUsed');
-const tx_date            = sortMeta('tx_date');
-const tx_time            = sortMeta('tx_time');
-
-
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
 
-  const setPortfolioValues = (_account, _balance, _opts) => {
-    const anchorAddress    = document.getElementById("anchor-portfolio-address");
-    const ethBalance       = document.getElementById("tabledata-portfolio-eth-balance");
-    const publicAddressOut = document.getElementById("out-public-address");
-    const ethBalanceOut    = document.getElementById("out-eth-balance");
+  const setContractValues = async () => {
+    const { ethereum } = window;
+    if (!ethereum.selectedAddress) { return }
 
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+
+    const vxcnTokenContract = new ethers.Contract(
+      VixcoinToken._contractAddress,
+      VixcoinToken.abi,
+      signer
+    );
+
+    const vxcnTokenCrowdsaleContract = new ethers.Contract(
+      VixcoinTokenCrowdsale._contractAddress,
+      VixcoinTokenCrowdsale.abi,
+      signer
+    );
+
+    console.log(signer);
+    console.log(ethers);
+    console.log(vxcnTokenContract);
+    console.log(vxcnTokenContract);
+
+    const name   = await vxcnTokenContract.name();
+    const symbol = await vxcnTokenContract.symbol();
+    const rate   = await vxcnTokenCrowdsaleContract.rate();
+    setCookie("tokenName", name, 364);
+    setCookie("tokenSymbol", symbol, 364);
+    setCookie("tokenRate", rate, 364);
+    setCookie("tokenContractAddress", VixcoinToken._contractAddress, 364);
+    setCookie("crowdsaleContractAddress", VixcoinTokenCrowdsale._contractAddress, 364);
+  }
+
+  const setPortfolioValues = (_account, _balance, _opts) => {
+    const anchorAddress = document.getElementById("anchor-portfolio-address");
+    const ethBalance    = document.getElementById("tabledata-portfolio-eth-balance");
+
+    // If no account...
     if (_opts) {
       anchorAddress.textContent = _account;
       anchorAddress.href = _opts["href"];
     }
+    // If account...
     else {
       anchorAddress.textContent = _account.abbrv;
       anchorAddress.href = _account.href;
-      publicAddressOut.value = _account.address;
-      ethBalanceOut.value = _balance;
     }
 
     ethBalance.textContent = `${_balance}`;
@@ -159,44 +165,6 @@ const App = () => {
         }
       }
 
-      const thisABI = [
-        {
-          "constant": false,
-          "inputs": [
-            {
-              "name": "_amount",
-              "type": "uint256"
-            },
-            {
-              "name": "_recipient",
-              "type": "address"
-            }
-          ],
-          "name": "withdraw",
-          "outputs": [],
-          "payable": false,
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "constant": false,
-          "inputs": [],
-          "name": "deposit",
-          "outputs": [],
-          "payable": true,
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "payable": true,
-          "stateMutability": "payable",
-          "type": "fallback"
-        }
-      ];
-
-      const thing  = await eth.contract(thisABI).at("0x64C172F084f56E15Fc3410869e9641172aEEb5E8");
-      // console.log(thing.totalSupply)
-
       if (currentAccount) {
         return;
       }
@@ -262,25 +230,31 @@ const App = () => {
 
       // If new account sign on...
       if (accounts.length !== 0 && accounts[0] !== currentAccount) {
+        const eth = new Eth(web3.currentProvider);
+        const ethAccounts = await ethereum.request({ method: "eth_requestAccounts" });
+        const weiBalance = await eth.getBalance(ethAccounts[0]);
+        const ethBalance = Eth.fromWei(weiBalance, 'ether');
         const newUrl = `http://localhost:8000/portfolio/?id=${accounts[0]}`;
 
         getWalletConnection();
+        setCookie("publicAddress", accounts[0], 364)
+        setCookie("ethBalance", ethBalance, 364)
 
         // Need to refresh page with new url to exercise Django view
         if (currentUrl !== newUrl) {
           window.open(newUrl, "_top");
         }
-
-        return;
       }
       // If no account...
       else if (accounts.length === 0) {
-        const newUrl = `http://localhost:8000/portfolio/?id=${noAccount}`;
+        const newUrl = `http://localhost:8000/portfolio/?id=${noAccountAddress}`;
        
         setCurrentAccount(null);
         setPortfolioValues(" ", 0.00, {"href": ""});
-        setWalletValues(noAccount, {"value": null});
-        setTransactionTable(null);
+        setWalletValues(noAccountAddress, {"value": null});
+        setTransactionTable(null);        
+        setCookie("publicAddress", noAccountAddress, 364)
+        setCookie("ethBalance", "0", 364)
 
         // Need to refresh page with new url to exercise Django view
         if (currentUrl !== newUrl) {
@@ -295,6 +269,7 @@ const App = () => {
 
   ethereum.on('accountsChanged', getWalletStatus);
   ethereum.on('chainChanged', getWalletStatus);
+  setContractValues();
   getWalletStatus();
   
   if (!currentAccount) {

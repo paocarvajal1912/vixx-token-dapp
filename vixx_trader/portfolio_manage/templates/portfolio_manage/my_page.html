@@ -1,0 +1,24 @@
+{% extends './my_page_cards.html' %}
+{% load static %}
+
+<DOCTYPE html>
+<html lang="en">
+  <head>
+      {% block head %}
+      {% endblock %}
+  </head>
+
+  <header>
+    {% block header %}
+    {% endblock %}
+  </header>
+
+  <body>
+
+    <div class="container">
+      {% block profile_content %}
+        <h3>Profile Summary</h3>
+      {% endblock %}
+    
+  </body>
+</html>

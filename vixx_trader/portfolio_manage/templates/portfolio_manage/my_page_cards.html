@@ -1,0 +1,73 @@
+{% extends './my_page_base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    {% block head %}
+    {% endblock %}
+</head>
+
+<header>
+  {% block header %}
+  {% endblock %}
+</header>
+
+<body>
+  {% block content %}
+  <h3>Current Market Value: {{ coin_cost }} USD</h3>
+
+  <div class="user-card">      
+    {% block profile_content %}
+    {% endblock %}
+    <div class="profile_card">
+      <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Nickname</th>
+              <th>ETH Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <td>
+                      <label class="field field_v2">
+                          <input
+                          name="user"
+                          class="field__input"
+                          id="profile_username"
+                          placeholder="Enter username..."
+                            />
+                          <span class="field__label-wrap">
+                              <span class="field__label">{{ user }}</span>
+                          </span>
+                      </label>
+                  </td>
+                </form>                
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <td>
+                      <label class="field field_v2">
+                          <input
+                          name="nickname"
+                          class="field__input"
+                          id="profile_nickname"
+                          placeholder="Enter porfolio nickname..."
+                            />
+                          <span class="field__label-wrap">
+                              <span class="field__label">{{ nickname }}</span>
+                          </span>
+                      </label>
+                  </td>
+                </form>
+                <td id="tabledata-profile-eth-balance"></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+  {% endblock %}
+</body>

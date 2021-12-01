@@ -1,10 +1,36 @@
-const COIN_COST = document.getElementsByName('coin_cost')[0].content;
+const noAccountAddress = "0x00..."
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function sortMeta(data) {
+    return document.getElementsByName(data)[0].content.split("//s");
+}
+
+function subAddress(addr, hash_type) {
+  const sub_address = `${addr.substring(0, 5)}...${addr.substring(addr.length-4, addr.length)}`
+
+    // Valid hash_type values are "tx", "address"
+    if (hash_type) {
+      return `<a href="https://kovan.etherscan.io/${hash_type}/${addr}" target="_blank">${sub_address}</a>`
+    }
+    else {
+      return sub_address
+    }
+}
 
 function myClock() {
     setTimeout(function() {   
         const d = new Date();
         const n = d.toLocaleTimeString();
-        document.getElementById("time_executed").value = n; 
+        setCookie("timeExecuted", n, 364)
         myClock();
     }, 1000)
 }
@@ -60,6 +86,16 @@ function _defaultDepositCoin() {
     depositCoinCount.value = 0.00;
     depositCurrencyCost.value = 0.00;
 }
+
+const contract_address   = document.getElementsByName('contract_address')[0].content;
+const tx_hash            = sortMeta('tx_hash');
+const tx_contractAddress = sortMeta('tx_contractAddress');
+const tx_from            = sortMeta('tx_from');
+const tx_to              = sortMeta('tx_to');
+const tx_value           = sortMeta('tx_value');
+const tx_gasUsed         = sortMeta('tx_gasUsed');
+const tx_date            = sortMeta('tx_date');
+const tx_time            = sortMeta('tx_time');
 
 myClock();
 

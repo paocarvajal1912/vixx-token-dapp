@@ -8,5 +8,6 @@ urlpatterns = [
     path("",            views.home,      name="home"),
     path("about/",      views.about,     name="about"),
     url(r"^portfolio/", views.portfolio, name="portfolio"),
+    url(r"^mypage/",    views.my_page,   name="mypage"),
 ]
 

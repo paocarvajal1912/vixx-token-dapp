@@ -20,8 +20,6 @@
     {% csrf_token %}
 
     <div class="user-card">
-      <input type="hidden" name="out_public_address" id="out-public-address" placeholder="0x00" />
-      <input type="hidden" name="out_eth_balance" id="out-eth-balance" placeholder="0.00" />
       {% block portfolio_content %}
       {% endblock %}
     </div>

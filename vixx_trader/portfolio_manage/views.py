@@ -26,22 +26,18 @@ from .forms  import (
     TransactionCreateForm,
 )
 
-from .utils.web3 import web3backend
+from .utils.web3utils import web3backend
 
 WEB3BACKEND = web3backend()
 
 
-def home(request):
-    # breakpoint()
-    # if request.method == "POST":
-    #     gh = 1
-    #     breakpoint()
-    
+def home(request):    
     transactions = {}
 
     plot_growth, plot_returns = plot_performance()
     
-    this_portfolio = Portfolio.objects.get(address=WEB3BACKEND["public_key"])    
+    public_address = request.COOKIES["publicAddress"].lower()
+    this_portfolio = Portfolio.objects.get(address=public_address)    
     print(this_portfolio.nickname)
 
     context = {
@@ -64,18 +60,13 @@ def about(request):
 
 
 def portfolio(request):
-    if request.method == "POST":
-        public_address = request.POST["out_public_address"]
-    elif request.method == "GET":
-        public_address = request.GET["id"]
+    # breakpoint()
 
-    print(public_address)
-    response     = get_etherscan_response(public_address) if public_address != "0x00..." else {"result": {}}
-    df_response  = pd.DataFrame.from_dict(response["result"])
-    transactions = meta_transaction_list(df_response) if not df_response.empty else {}
-    print(transactions)
-
-    this_portfolio = Portfolio.objects.get(address=WEB3BACKEND["public_key"])
+    public_address = request.COOKIES["publicAddress"].lower()
+    response       = get_etherscan_response(public_address) if public_address != "0x00..." else {"result": {}}
+    df_response    = pd.DataFrame.from_dict(response["result"])
+    transactions   = meta_transaction_list(df_response) if not df_response.empty else {}
+    this_portfolio = Portfolio.objects.get(address=public_address)
 
     context = {
         "user":             this_portfolio.user,
@@ -88,6 +79,50 @@ def portfolio(request):
     }
 
     return render(request, "portfolio_manage/portfolio_page.html", context)
+    
+    
+def my_page(request):
+    public_address = request.COOKIES["publicAddress"].lower()
+
+    if request.method == "POST" and "user" in request.POST.keys():
+        user = request.POST["user"]
+        Portfolio.objects.filter(address=public_address).update(user=user)
+    elif request.method == "POST" and "nickname" in request.POST.keys():
+        nickname = request.POST["nickname"]
+        Portfolio.objects.filter(address=public_address).update(nickname=nickname)
+    
+    if request.method == "GET" and Portfolio.objects.filter(address=public_address).count() == 0:
+        # Create new account
+        new_portfolio = Portfolio(
+            address=public_address,
+            user="",
+            nickname="",
+            balance=0.0,
+            coin_count=0.0,
+        )
+        new_portfolio.save()
+    elif request.method == "GET":
+        gh = 1
+        print("------------ in getter ------------")
+        
+    this_portfolio = Portfolio.objects.get(address=public_address)
+    response       = get_etherscan_response(public_address) if public_address != "0x00..." else {"result": {}}
+    df_response    = pd.DataFrame.from_dict(response["result"])
+    transactions   = meta_transaction_list(df_response) if not df_response.empty else {}
+
+    print(public_address)
+
+    context = {
+        "user":             this_portfolio.user,
+        "balance":          this_portfolio.balance,
+        "nickname":         this_portfolio.nickname,
+        "public_address":   this_portfolio.address,
+        "contract_address": request.COOKIES["crowdsaleContractAddress"],
+        "coin_cost":        1.4,
+        **transactions,
+    }
+
+    return render(request, "portfolio_manage/my_page.html", context)
 
 
 def plot_performance():
