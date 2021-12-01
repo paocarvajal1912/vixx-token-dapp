@@ -1,4 +1,5 @@
-const noAccountAddress = "0x00..."
+const COIN_COST = 25;
+const noAccountAddress = "0x00...";
 
 function setCookie(name,value,days) {
     var expires = "";

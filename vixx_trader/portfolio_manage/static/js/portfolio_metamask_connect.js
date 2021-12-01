@@ -24,6 +24,7 @@ const App = () => {
 
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
+    const rateDisplay = document.getElementById("current-market-value")
 
     const vxcnTokenContract = new ethers.Contract(
       VixcoinToken._contractAddress,
@@ -37,14 +38,33 @@ const App = () => {
       signer
     );
 
+    const vxcnTokenCrowdsaleDeployerContract = new ethers.Contract(
+      VixcoinTokenCrowdsaleDeployer._contractAddress,
+      VixcoinTokenCrowdsaleDeployer.abi,
+      signer
+    );
+
     console.log(signer);
     console.log(ethers);
-    console.log(vxcnTokenContract);
-    console.log(vxcnTokenContract);
-
+    console.log("vxcnTokenContract: ", vxcnTokenContract);
+    console.log("vxcnTokenCrowdsaleContract: ", vxcnTokenCrowdsaleContract);
+    console.log("vxcnTokenCrowdsaleDeployerContract: ", vxcnTokenCrowdsaleDeployerContract);
+    
+    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    console.log("here i am")
     const name   = await vxcnTokenContract.name();
     const symbol = await vxcnTokenContract.symbol();
     const rate   = await vxcnTokenCrowdsaleContract.rate();
+    // const balance = await vxcnTokenContract.balanceOf(VixcoinToken._contractAddress);
+    // const isMinter = await vxcnTokenContract.isMinter(accounts[0]);
+    rateDisplay.textContent = `VXCN Current Exchange Rate: ${parseInt(Number(rate), 10)} wei`
+
+    // await vxcnTokenContract.mint(accounts[0], 1010)
+
+    // console.log(balance);
+    // console.log(accounts[0])
+    // console.log(isMinter);
+
     setCookie("tokenName", name, 364);
     setCookie("tokenSymbol", symbol, 364);
     setCookie("tokenRate", rate, 364);

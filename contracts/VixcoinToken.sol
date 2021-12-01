@@ -1,29 +1,15 @@
-//SDPX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.5.0;
 
-import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
 
 
-contract VixcoinToken is ERC20, ERC20Detailed, ERC20Mintable {
-    address payable owner;
+contract VixcoinToken is ERC20Mintable, ERC20Pausable, ERC20Detailed {
+  constructor(string memory _name, string memory _symbol, uint8 _decimals)
+  ERC20Detailed(_name, _symbol, _decimals)
+  public
+  {}
 
-    constructor (
-        string memory _name,
-        string memory _symbol
-    )
-    ERC20Detailed(_name, _symbol, 18)
-    public {}
-    
-    modifier onlyOwner {
-        require(owner == msg.sender, "You are not authorized to mint.");
-        _;
-    }
-
-    function mintVxcnToken(address _minter, uint _amount) public onlyOwner {
-        _mint(_minter, _amount);
-    }
 }
-

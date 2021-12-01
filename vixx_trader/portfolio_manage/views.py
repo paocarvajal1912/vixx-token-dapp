@@ -60,9 +60,19 @@ def about(request):
 
 
 def portfolio(request):
-    # breakpoint()
-
     public_address = request.COOKIES["publicAddress"].lower()
+
+    if request.method == "GET" and Portfolio.objects.filter(address=public_address).count() == 0:
+        # Create new account
+        new_portfolio = Portfolio(
+            address=public_address,
+            user="",
+            nickname="",
+            balance=0.0,
+            coin_count=0.0,
+        )
+        new_portfolio.save()
+        
     response       = get_etherscan_response(public_address) if public_address != "0x00..." else {"result": {}}
     df_response    = pd.DataFrame.from_dict(response["result"])
     transactions   = meta_transaction_list(df_response) if not df_response.empty else {}
@@ -89,9 +99,8 @@ def my_page(request):
         Portfolio.objects.filter(address=public_address).update(user=user)
     elif request.method == "POST" and "nickname" in request.POST.keys():
         nickname = request.POST["nickname"]
-        Portfolio.objects.filter(address=public_address).update(nickname=nickname)
-    
-    if request.method == "GET" and Portfolio.objects.filter(address=public_address).count() == 0:
+        Portfolio.objects.filter(address=public_address).update(nickname=nickname)    
+    elif request.method == "GET" and Portfolio.objects.filter(address=public_address).count() == 0:
         # Create new account
         new_portfolio = Portfolio(
             address=public_address,
@@ -101,10 +110,7 @@ def my_page(request):
             coin_count=0.0,
         )
         new_portfolio.save()
-    elif request.method == "GET":
-        gh = 1
-        print("------------ in getter ------------")
-        
+            
     this_portfolio = Portfolio.objects.get(address=public_address)
     response       = get_etherscan_response(public_address) if public_address != "0x00..." else {"result": {}}
     df_response    = pd.DataFrame.from_dict(response["result"])

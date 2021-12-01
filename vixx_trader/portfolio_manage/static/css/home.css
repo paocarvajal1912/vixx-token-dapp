@@ -214,7 +214,7 @@ div::-webkit-scrollbar-thumb {
 }
 
 #about-page-link {
-    margin: 10px 0 0 85px;
+    margin: 10px 0 0 55px;
     padding-bottom: 20px;
 }
 
@@ -263,7 +263,7 @@ div::-webkit-scrollbar-thumb {
 .page-link {
     color: white;
     font-size: 18px;
-    text-shadow: 3px 3px 3px rgba(1, 1, 1, 0.75);
+    text-shadow: 3px 3px 3px rgba(1, 1, 1, 1);
 }
 
 .emoji {

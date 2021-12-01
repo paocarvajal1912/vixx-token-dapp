@@ -5,6 +5,43 @@ const { ethers } = ethers;
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
+  
+  const setContractValues = async () => {
+    const { ethereum } = window;
+    if (!ethereum.selectedAddress) { return }
+
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const rateDisplay = document.getElementById("current-market-value")
+
+    const vxcnTokenContract = new ethers.Contract(
+      VixcoinToken._contractAddress,
+      VixcoinToken.abi,
+      signer
+    );
+
+    const vxcnTokenCrowdsaleContract = new ethers.Contract(
+      VixcoinTokenCrowdsale._contractAddress,
+      VixcoinTokenCrowdsale.abi,
+      signer
+    );
+
+    console.log(signer);
+    console.log(ethers);
+    console.log("vxcnTokenContract: ", vxcnTokenContract);
+    console.log("vxcnTokenCrowdsaleContract: ", vxcnTokenCrowdsaleContract);
+
+    const name   = await vxcnTokenContract.name();
+    const symbol = await vxcnTokenContract.symbol();
+    const rate   = await vxcnTokenCrowdsaleContract.rate();
+    rateDisplay.textContent = `VXCN Current Exchange Rate: ${parseInt(Number(rate), 10)} wei`
+
+    setCookie("tokenName", name, 364);
+    setCookie("tokenSymbol", symbol, 364);
+    setCookie("tokenRate", rate, 364);
+    setCookie("tokenContractAddress", VixcoinToken._contractAddress, 364);
+    setCookie("crowdsaleContractAddress", VixcoinTokenCrowdsale._contractAddress, 364);
+  }
 
   const setPortfolioValues = (_balance) => {
     const ethBalance = document.getElementById("tabledata-profile-eth-balance");
@@ -149,6 +186,7 @@ const App = () => {
 
   ethereum.on('accountsChanged', getWalletStatus);
   ethereum.on('chainChanged', getWalletStatus);
+  setContractValues();
   getWalletStatus();
   
   if (!currentAccount) {
